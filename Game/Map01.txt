@@ -1,0 +1,11 @@
+###b################b######
+#j     d     a            #
+#      #     #mmm o  mmmmm#
+##########b######a## ###d##
+#c     #mm mmm#    # ammmm#
+b   o  d      a    d #mmmm#
+#      #mmm mm#  c # #mmmm#
+####a###### #b#  ### ### ##
+#c       c#          o   c#
+#      #  #  o   #mmmmmmmm#
+########b##################

@@ -1,0 +1,6 @@
+﻿  Source.c
+c:\users\victf\source\repos\game\game\source.c(785): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\victf\source\repos\game\game\source.c(896): warning C4047: '!=': 'int' differs in levels of indirection from 'void *'
+c:\users\victf\source\repos\game\game\source.c(952): warning C4047: 'function': 'char *' differs in levels of indirection from 'char (*)[27]'
+c:\users\victf\source\repos\game\game\source.c(952): warning C4024: 'gameplayManager': different types for formal and actual parameter 1
+  Game.vcxproj -> C:\Users\victf\source\repos\Game\Debug\Game.exe
