@@ -395,10 +395,17 @@ void adjustDifficulty()
 	resizeOgrs();//Redimensionar array de ogros para conter só ogros vivos
 }
 
-void gameOver()
+void gameOver(int win)
 {
+	if (win)
+	{
+		currentMenu = 2;
+	}
+	else
+	{
+		currentMenu = 3;
+	}
 	paused = 1;
-	currentMenu = 2;
 }
 
 void playerDie(int *playerX, int *playerY)
@@ -412,7 +419,7 @@ void playerDie(int *playerX, int *playerY)
 	}
 	else
 	{
-		gameOver();//Se não, game over
+		gameOver(0);//Se não, game over
 	}
 }
 
@@ -422,12 +429,12 @@ void gameplayManager(char *map, int *playerX, int *playerY)
 
 	if (playerKeys == totalKeys)
 	{
-		gameOver();
+		gameOver(1);
 	}
 
 	if (timeLimit - elapsedTimeS <= 0)
 	{
-		gameOver();
+		gameOver(0);
 	}
 
 	for (i = 0; i < totalOgrs; i++)
@@ -782,19 +789,33 @@ void optionsMenuR()
 void gameOverScreenR()
 {
 	int killedOgres = totalOgrs - countOgresAlive();
-	int score = (playerKeys * 2 + playerCoins + killedOgres * 2 + lives * 3 + (timeLimit - elapsedTimeS))*(difficulty + 1);
-	attron(COLOR_PAIR(10));
-	mvprintw(1, 2,"You Win!");
-	attroff(COLOR_PAIR(10));
+	int score = (playerCoins * 10 + killedOgres * 100)*(difficulty + 1);
+	
+	if (currentMenu == 2)
+	{
+		attron(COLOR_PAIR(10));
+		mvprintw(1, 2, "You Win!");
+		attroff(COLOR_PAIR(10));
+
+		activateMenuHighlight(0);
+		mvprintw(7, 2, "Continue");
+		deactivateMenuHighlight();
+	}
+	else
+	{
+		attron(COLOR_PAIR(10));
+		mvprintw(1, 2, "You lose!");
+		attroff(COLOR_PAIR(10));
+
+		activateMenuHighlight(0);
+		mvprintw(7, 2, "Restart");
+		deactivateMenuHighlight();
+	}
 
 	attron(COLOR_PAIR(11));
 	mvprintw(3, 2, "Time: %0.2f seconds", elapsedTimeS);
 	mvprintw(5, 2, "Points %d", score);
 	attroff(COLOR_PAIR(11));
-
-	activateMenuHighlight(0);
-	mvprintw(7, 2, "Reset");
-	deactivateMenuHighlight();
 
 	activateMenuHighlight(1);
 	mvprintw(9, 2, "Quit");
@@ -820,6 +841,7 @@ void drawMenu()
 		optionsMenuR();
 		break;
 	case 2:
+	case 3:
 		gameOverScreenR();
 	}
 	refresh();
@@ -881,10 +903,23 @@ void interactWithMenu()
 		switch (selectedOption)
 		{
 		case 0:
+			//Carregar próximo mapa
 			break;
 		case 1:
 			paused = 0;
 			running = 0;
+			break;
+		}
+	case 3:
+		switch (selectedOption)
+		{
+		case 0:
+			//Reiniciar
+			break;
+		case 1:
+			paused = 0;
+			running = 0;
+			break;
 		}
 	}
 }
@@ -1001,7 +1036,7 @@ int main()
 		menuManager();
 	}
 
-	adjustDifficulty(ogres, &ogres);
+	adjustDifficulty();
 
 	while (running)
 	{
